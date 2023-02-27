@@ -2,7 +2,9 @@
 #include <random>
 #include <string>
 
+#include "PasswordCharset.h"
 #include "PasswordGenerator.h"
+#include "StringUtils.h"
 
 int main() {
   int length;
@@ -15,11 +17,23 @@ int main() {
   }
 
   PasswordGenerator password_generator;
+  PasswordCharset lowercase{
+    message : "Use lowercase letters",
+    str : "abcdefghijklmnopqrstuvwxyz"
+  };
+  PasswordCharset uppercase{
+    message : "Use UPPERCASE letters",
+    str : StringUtils::toupper(lowercase.str)
+  };
+  PasswordCharset numbers{message : "Use numbers", str : "0123456789"};
+  PasswordCharset symbols{message : "Use symbols", str : "!@#$%^&*()_+-="};
 
-  bool use_lowercase = password_generator.ask("Use lowercase letters (y/n)? ");
-  bool use_uppercase = password_generator.ask("Use uppercase letters (y/n)? ");
-  bool use_numbers = password_generator.ask("Use numbers (y/n)? ");
-  bool use_symbols = password_generator.ask("Use symbols (y/n)? ");
+  // bool use_lowercase = password_generator.ask("Use lowercase letters (y/n)?
+  // ");
+  bool use_lowercase = password_generator.ask(lowercase);
+  bool use_uppercase = password_generator.ask(uppercase);
+  bool use_numbers = password_generator.ask(numbers);
+  bool use_symbols = password_generator.ask(symbols);
 
   if (!use_uppercase && !use_lowercase && !use_numbers && !use_symbols) {
     std::cout

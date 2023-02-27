@@ -4,18 +4,8 @@
 #include <random>
 #include <string>
 
+#include "PasswordCharset.h"
 #include "StringUtils.h"
-
-struct CharSet {
-  /* data */
-  std::string message;
-  std::string str;
-};
-
-CharSet Lowercase{
-  message : "Use lowercase letters (y/n)? ",
-  str : "abcdefghijklmnopqrstuvwxyz"
-};
 
 class PasswordGenerator {
  private:
@@ -32,8 +22,7 @@ class PasswordGenerator {
   std::string generate(int length, bool use_lowercase, bool use_uppercase,
                        bool use_number, bool use_symbol);
 
-  bool ask(const string message);
-  bool ask_use(const CharSet&);
+  bool ask(const PasswordCharset&);
 };
 
 PasswordGenerator::PasswordGenerator(/* args */) {}
@@ -71,10 +60,10 @@ std::string PasswordGenerator::generate(int length, bool use_lowercase,
   return password;
 };
 
-bool PasswordGenerator::ask(const string message) {
+bool PasswordGenerator::ask(const PasswordCharset& charset) {
   char input;
-  std::cout << message << ": ";
-
+  std::cout << charset.message << "(" << charset.str << ")"
+            << "(y/n)?: ";
   std::cin >> input;
 
   if (input != 'y' && input != 'n') {
