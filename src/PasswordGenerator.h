@@ -62,8 +62,7 @@ std::string PasswordGenerator::generate(int length, bool use_lowercase,
 
 bool PasswordGenerator::ask(const PasswordCharset& charset) {
   char input;
-  std::cout << charset.message << "(" << charset.str << ")"
-            << "(y/n)?: ";
+  std::cout << charset.message << " -- " << charset.str << " (y/n)?: ";
   std::cin >> input;
 
   if (input != 'y' && input != 'n') {
