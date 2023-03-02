@@ -10,41 +10,45 @@
 class PasswordGenerator {
  private:
   /* data */
-  const std::string m_lowercase = "abcdefghijklmnopqrstuvwxyz";
-  const std::string m_uppercase = StringUtils::toupper(m_lowercase);
-  const std::string m_numbers = "0123456789";
-  const std::string m_symbols = "!@#$%^&*()_+-=";
+  // const int m_num_passwords;
+  const PasswordCharset& m_lowercase;
+  const PasswordCharset& m_uppercase;
+  const PasswordCharset& m_numbers;
+  const PasswordCharset& m_symbols;
 
  public:
-  PasswordGenerator(/* args */);
+  PasswordGenerator(PasswordCharset& lowercase, PasswordCharset& uppercase,
+                    PasswordCharset& numbers, PasswordCharset& symbols);
   ~PasswordGenerator();
 
-  std::string generate(int length, bool use_lowercase, bool use_uppercase,
-                       bool use_number, bool use_symbol);
-
-  bool ask(const PasswordCharset&);
+  void generate(int length);
 };
 
-PasswordGenerator::PasswordGenerator(/* args */) {}
+PasswordGenerator::PasswordGenerator(PasswordCharset& lowercase,
+                                     PasswordCharset& uppercase,
+                                     PasswordCharset& numbers,
+                                     PasswordCharset& symbols)
+    : m_lowercase(lowercase),
+      m_uppercase(uppercase),
+      m_numbers(numbers),
+      m_symbols(symbols) {}
 
 PasswordGenerator::~PasswordGenerator() {}
 
-std::string PasswordGenerator::generate(int length, bool use_lowercase,
-                                        bool use_uppercase, bool use_number,
-                                        bool use_symbol) {
+void PasswordGenerator::generate(int length) {
   std::string charset;
 
-  if (use_lowercase) {
-    charset += m_lowercase;
+  if (m_lowercase.is_use) {
+    charset += m_lowercase.str;
   }
-  if (use_uppercase) {
-    charset += m_uppercase;
+  if (m_uppercase.is_use) {
+    charset += m_uppercase.str;
   }
-  if (use_number) {
-    charset += m_numbers;
+  if (m_numbers.is_use) {
+    charset += m_numbers.str;
   }
-  if (use_symbol) {
-    charset += m_symbols;
+  if (m_symbols.is_use) {
+    charset += m_symbols.str;
   }
 
   std::random_device rd;
@@ -57,20 +61,7 @@ std::string PasswordGenerator::generate(int length, bool use_lowercase,
     password += charset[dis(gen)];
   }
 
-  return password;
-};
-
-bool PasswordGenerator::ask(const PasswordCharset& charset) {
-  char input;
-  std::cout << charset.message << " -- " << charset.str << " (y/n)?: ";
-  std::cin >> input;
-
-  if (input != 'y' && input != 'n') {
-    std::cout << "Invalid Answer." << std::endl;
-    exit(1);
-  }
-
-  return input == 'y';
+  std::cout << "Generated password: " << password << std::endl;
 };
 
 #endif

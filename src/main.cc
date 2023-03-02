@@ -16,37 +16,26 @@ int main() {
     return 1;
   }
 
-  PasswordGenerator password_generator;
-  PasswordCharset lowercase{
-    message : "Use lowercase letters",
-    str : "abcdefghijklmnopqrstuvwxyz"
-  };
-  PasswordCharset uppercase{
-    message : "Use UPPERCASE letters",
-    str : StringUtils::toupper(lowercase.str)
-  };
-  PasswordCharset numbers{message : "Use numbers", str : "0123456789"};
-  PasswordCharset symbols{message : "Use symbols", str : "!@#$%^&*()_+-="};
+  PasswordCharset lowercase("Use lowercase letters",
+                            "abcdefghijklmnopqrstuvwxyz");
+  PasswordCharset uppercase("Use UPPERCASE letters",
+                            StringUtils::toupper(lowercase.str));
 
-  // bool use_lowercase = password_generator.ask("Use lowercase letters (y/n)?
-  // ");
-  bool use_lowercase = password_generator.ask(lowercase);
-  bool use_uppercase = password_generator.ask(uppercase);
-  bool use_numbers = password_generator.ask(numbers);
-  bool use_symbols = password_generator.ask(symbols);
+  PasswordCharset numbers("Use numbers", "0123456789");
+  PasswordCharset symbols("Use symbols", "!@#$%^&*()_+-=");
 
-  if (!use_uppercase && !use_lowercase && !use_numbers && !use_symbols) {
+  if (!lowercase.is_use && !uppercase.is_use && !numbers.is_use &&
+      !symbols.is_use) {
     std::cout
         << "Invalid character set. At least one character set must be used."
         << std::endl;
     return 1;
   }
 
-  // パスワード生成
-  std::string password = password_generator.generate(
-      length, use_lowercase, use_uppercase, use_numbers, use_symbols);
+  PasswordGenerator password_generator(lowercase, uppercase, numbers, symbols);
 
-  std::cout << "Generated password: " << password << std::endl;
+  // パスワード生成
+  password_generator.generate(length);
 
   return 0;
-}
+};
