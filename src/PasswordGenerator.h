@@ -10,7 +10,6 @@
 class PasswordGenerator {
  private:
   /* data */
-  // const int m_num_passwords;
   const PasswordCharset& m_lowercase;
   const PasswordCharset& m_uppercase;
   const PasswordCharset& m_numbers;
