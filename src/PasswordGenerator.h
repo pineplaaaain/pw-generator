@@ -1,7 +1,8 @@
 #ifndef PASSWORD_GENERATOR
 #define PASSWORD_GENERATOR
 
-#include <random>
+#include <openssl/rand.h>
+#include <stdexcept>
 #include <string>
 
 #include "PasswordCharset.h"
@@ -50,14 +51,15 @@ void PasswordGenerator::generate(int length) {
     charset += m_symbols.str;
   }
 
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0, charset.size() - 1);
-
   std::string password;
+  unsigned char random_bytes[length];
+
+  if (RAND_bytes(random_bytes, length) != 1) {
+    throw std::runtime_error("Failed to generate cryptographically secure random bytes");
+  }
 
   for (int i = 0; i < length; ++i) {
-    password += charset[dis(gen)];
+    password += charset[random_bytes[i] % charset.size()];
   }
 
   std::cout << "Generated password: " << password << std::endl;
