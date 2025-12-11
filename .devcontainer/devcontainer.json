@@ -19,10 +19,10 @@
 		"vscode": {
 			"settings": {
 				"[c][cpp]": {
-					"editor.wordBasedSuggestions": false,
+					"editor.wordBasedSuggestions": "off",
 					"editor.suggest.insertMode": "replace",
 					"editor.semanticHighlighting.enabled": true,
-					"editor.tabSize": 2,
+					"editor.tabSize": 4,
 					"editor.formatOnSave": true
 				},
 				"[json][jsonc]": {
