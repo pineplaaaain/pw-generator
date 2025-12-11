@@ -1,1 +1,69 @@
 # PW GENERATOR
+
+セキュアなパスワードを生成するC++製コマンドラインツール
+
+## 機能
+
+- 8文字以上の任意の長さのパスワード生成
+- 文字種の選択が可能
+  - 小文字 (a-z)
+  - 大文字 (A-Z)
+  - 数字 (0-9)
+  - 記号 (!@#$%^&*()_+-=)
+- 暗号学的に安全な乱数生成器を使用
+
+## 必要環境
+
+- C++17対応コンパイラ (g++, clang++)
+- make
+
+## ビルド方法
+
+```bash
+make
+```
+
+## 使い方
+
+```bash
+./out/pwgen
+```
+
+対話形式でパスワードを生成します：
+
+```
+Enter password length (8 or more): 16
+Use lowercase letters -- abcdefghijklmnopqrstuvwxyz (y/n)?: y
+Use UPPERCASE letters -- ABCDEFGHIJKLMNOPQRSTUVWXYZ (y/n)?: y
+Use numbers -- 0123456789 (y/n)?: y
+Use symbols -- !@#$%^&*()_+-= (y/n)?: y
+Generated password: aB3#xK9@mP2$qL7!
+```
+
+## Makeコマンド
+
+```bash
+make          # ビルド
+make run      # ビルドして実行
+make clean    # 生成ファイル削除
+make rebuild  # クリーンビルド
+```
+
+## プロジェクト構成
+
+```
+.
+├── src/
+│   ├── main.cc              # メインプログラム
+│   ├── PasswordGenerator.h  # パスワード生成ロジック
+│   ├── PasswordCharset.h    # 文字セット定義
+│   └── StringUtils.h        # 文字列ユーティリティ
+├── out/                     # ビルド出力先
+├── Makefile                 # ビルド設定
+├── LICENSE                  # ライセンス
+└── README.md
+```
+
+## ライセンス
+
+MIT License
