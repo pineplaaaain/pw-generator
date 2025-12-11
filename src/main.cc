@@ -28,8 +28,6 @@ int main() {
   PasswordCharset numbers{message : "Use numbers", str : "0123456789"};
   PasswordCharset symbols{message : "Use symbols", str : "!@#$%^&*()_+-="};
 
-  // bool use_lowercase = password_generator.ask("Use lowercase letters (y/n)?
-  // ");
   bool use_lowercase = password_generator.ask(lowercase);
   bool use_uppercase = password_generator.ask(uppercase);
   bool use_numbers = password_generator.ask(numbers);
@@ -42,7 +40,6 @@ int main() {
     return 1;
   }
 
-  // パスワード生成
   std::string password = password_generator.generate(
       length, use_lowercase, use_uppercase, use_numbers, use_symbols);
 

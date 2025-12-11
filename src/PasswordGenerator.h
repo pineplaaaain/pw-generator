@@ -1,6 +1,6 @@
-#ifndef PASSWORD_GENERATOR
-#define PASSWORD_GENERATOR
+#pragma once
 
+#include <iostream>
 #include <random>
 #include <string>
 
@@ -9,25 +9,16 @@
 
 class PasswordGenerator {
  private:
-  /* data */
   const std::string m_lowercase = "abcdefghijklmnopqrstuvwxyz";
   const std::string m_uppercase = StringUtils::toupper(m_lowercase);
   const std::string m_numbers = "0123456789";
   const std::string m_symbols = "!@#$%^&*()_+-=";
 
  public:
-  PasswordGenerator(/* args */);
-  ~PasswordGenerator();
-
   std::string generate(int length, bool use_lowercase, bool use_uppercase,
                        bool use_number, bool use_symbol);
-
-  bool ask(const PasswordCharset&);
+  bool ask(const PasswordCharset &charset);
 };
-
-PasswordGenerator::PasswordGenerator(/* args */) {}
-
-PasswordGenerator::~PasswordGenerator() {}
 
 std::string PasswordGenerator::generate(int length, bool use_lowercase,
                                         bool use_uppercase, bool use_number,
@@ -60,7 +51,7 @@ std::string PasswordGenerator::generate(int length, bool use_lowercase,
   return password;
 };
 
-bool PasswordGenerator::ask(const PasswordCharset& charset) {
+inline bool PasswordGenerator::ask(const PasswordCharset &charset) {
   char input;
   std::cout << charset.message << " -- " << charset.str << " (y/n)?: ";
   std::cin >> input;
@@ -71,6 +62,4 @@ bool PasswordGenerator::ask(const PasswordCharset& charset) {
   }
 
   return input == 'y';
-};
-
-#endif
+}
