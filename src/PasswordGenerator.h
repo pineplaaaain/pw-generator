@@ -5,60 +5,39 @@
 #include <string>
 
 #include "PasswordCharset.h"
-#include "StringUtils.h"
 
 class PasswordGenerator {
- private:
-  const std::string m_lowercase = "abcdefghijklmnopqrstuvwxyz";
-  const std::string m_uppercase = StringUtils::toupper(m_lowercase);
-  const std::string m_numbers = "0123456789";
-  const std::string m_symbols = "!@#$%^&*()_+-=";
-
  public:
-  std::string generate(int length, bool use_lowercase, bool use_uppercase,
-                       bool use_number, bool use_symbol);
-  bool ask(const PasswordCharset &charset);
+  static std::string generate(size_t length, const std::string& charset);
+  static bool ask(const PasswordCharset& charset);
 };
 
-std::string PasswordGenerator::generate(int length, bool use_lowercase,
-                                        bool use_uppercase, bool use_number,
-                                        bool use_symbol) {
-  std::string charset;
-
-  if (use_lowercase) {
-    charset += m_lowercase;
-  }
-  if (use_uppercase) {
-    charset += m_uppercase;
-  }
-  if (use_number) {
-    charset += m_numbers;
-  }
-  if (use_symbol) {
-    charset += m_symbols;
-  }
+inline std::string PasswordGenerator::generate(size_t length,
+                                               const std::string& charset) {
+  if (charset.empty()) return "";
 
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0, charset.size() - 1);
+  std::uniform_int_distribution<size_t> dis(0, charset.size() - 1);
 
   std::string password;
+  password.reserve(length);
 
-  for (int i = 0; i < length; ++i) {
+  for (size_t i = 0; i < length; ++i) {
     password += charset[dis(gen)];
   }
 
   return password;
-};
+}
 
-inline bool PasswordGenerator::ask(const PasswordCharset &charset) {
+inline bool PasswordGenerator::ask(const PasswordCharset& charset) {
   char input;
   std::cout << charset.message << " -- " << charset.str << " (y/n)?: ";
   std::cin >> input;
 
-  if (input != 'y' && input != 'n') {
-    std::cout << "Invalid Answer." << std::endl;
-    exit(1);
+  while (input != 'y' && input != 'n') {
+    std::cout << "Invalid input. Please enter 'y' or 'n': ";
+    std::cin >> input;
   }
 
   return input == 'y';
