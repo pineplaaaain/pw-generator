@@ -44,9 +44,26 @@ Generated password: aB3#xK9@mP2$qL7!
 
 ```bash
 make          # ビルド
+make DEBUG=1  # デバッグビルド
 make run      # ビルドして実行
 make clean    # 生成ファイル削除
 make rebuild  # クリーンビルド
+```
+
+## Dockerでのビルド・実行
+
+```bash
+# コンテナを起動
+docker compose up -d
+
+# コンテナ内でビルド
+docker compose exec app make
+
+# コンテナ内でビルド＆実行
+docker compose exec app make run
+
+# ワンライナーでビルドだけして終了
+docker compose run --rm app make
 ```
 
 ## プロジェクト構成
