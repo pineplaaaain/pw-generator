@@ -49,4 +49,10 @@ clean:
 # ビルドし直し
 rebuild: clean all
 
-.PHONY: all run clean rebuild
+# テスト実行
+test: $(TARGET)
+	$(CXX) $(CXXFLAGS) -o $(OUT_DIR)/test_runner tests/test_main.cc
+	@echo "Running tests..."
+	@$(OUT_DIR)/test_runner
+
+.PHONY: all run clean rebuild test
