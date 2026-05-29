@@ -9,7 +9,6 @@
 #include "InteractiveMode.h"
 #include "PasswordCharset.h"
 #include "PasswordGenerator.h"
-#include "StringUtils.h"
 
 int main(int argc, char* argv[]) {
   // Interactive mode: no arguments
@@ -33,16 +32,11 @@ int main(int argc, char* argv[]) {
   }
 
   // Build charsets
-  const std::string lowercase_str = "abcdefghijklmnopqrstuvwxyz";
-  const std::string uppercase_str = StringUtils::toupper(lowercase_str);
-  const std::string numbers_str = "0123456789";
-  const std::string symbols_str = "!#$%^&*()_+-=";
-
   std::vector<std::string> charsets;
-  if (config.useLowercase) charsets.push_back(lowercase_str);
-  if (config.useUppercase) charsets.push_back(uppercase_str);
-  if (config.useNumbers) charsets.push_back(numbers_str);
-  if (config.useSymbols) charsets.push_back(symbols_str);
+  if (config.useLowercase) charsets.push_back(charsets::LOWERCASE);
+  if (config.useUppercase) charsets.push_back(charsets::UPPERCASE);
+  if (config.useNumbers) charsets.push_back(charsets::NUMBERS);
+  if (config.useSymbols) charsets.push_back(charsets::SYMBOLS);
 
   // Validate length against charset count
   if (config.length < charsets.size()) {

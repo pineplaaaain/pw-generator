@@ -9,7 +9,6 @@
 #include "Entropy.h"
 #include "PasswordCharset.h"
 #include "PasswordGenerator.h"
-#include "StringUtils.h"
 
 // Run the interactive password generation flow.
 // Returns exit code (0 = success, 1 = error).
@@ -29,12 +28,10 @@ inline int runInteractiveMode() {
     return 1;
   }
 
-  const PasswordCharset lowercase{"Use lowercase letters",
-                                  "abcdefghijklmnopqrstuvwxyz"};
-  const PasswordCharset uppercase{"Use UPPERCASE letters",
-                                  StringUtils::toupper(lowercase.str)};
-  const PasswordCharset numbers{"Use numbers", "0123456789"};
-  const PasswordCharset symbols{"Use symbols", "!#$%^&*()_+-="};
+  const PasswordCharset lowercase{"Use lowercase letters", charsets::LOWERCASE};
+  const PasswordCharset uppercase{"Use UPPERCASE letters", charsets::UPPERCASE};
+  const PasswordCharset numbers{"Use numbers", charsets::NUMBERS};
+  const PasswordCharset symbols{"Use symbols", charsets::SYMBOLS};
 
   bool use_lowercase = PasswordGenerator::ask(lowercase);
   bool use_uppercase = PasswordGenerator::ask(uppercase);

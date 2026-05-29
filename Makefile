@@ -50,7 +50,8 @@ clean:
 rebuild: clean all
 
 # テスト実行
-test: $(TARGET)
+test:
+	@mkdir -p $(OUT_DIR)
 	$(CXX) $(CXXFLAGS) -o $(OUT_DIR)/test_runner tests/test_main.cc
 	@echo "Running tests..."
 	@$(OUT_DIR)/test_runner

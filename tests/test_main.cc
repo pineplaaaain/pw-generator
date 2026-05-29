@@ -6,6 +6,7 @@
 #include "../src/ArgParser.h"
 #include "../src/Clipboard.h"
 #include "../src/Config.h"
+#include "../src/PasswordCharset.h"
 #include "../src/PasswordGenerator.h"
 
 // ============================================================
@@ -198,6 +199,49 @@ TEST(generateGuaranteed_empty_charsets_returns_empty) {
   std::vector<std::string> charsets = {};
   std::string pw = PasswordGenerator::generateGuaranteed(10, charsets);
   ASSERT_TRUE(pw.empty());
+}
+
+// ============================================================
+// Tests: PasswordGenerator::generate
+// ============================================================
+
+TEST(generate_returns_correct_length) {
+  std::string pw = PasswordGenerator::generate(20, charsets::LOWERCASE);
+  ASSERT_EQ(pw.size(), static_cast<size_t>(20));
+}
+
+TEST(generate_uses_only_given_charset) {
+  for (int i = 0; i < 50; ++i) {
+    std::string pw = PasswordGenerator::generate(16, charsets::NUMBERS);
+    for (char c : pw) {
+      ASSERT_TRUE(charsets::NUMBERS.find(c) != std::string::npos);
+    }
+  }
+}
+
+TEST(generate_empty_charset_returns_empty) {
+  std::string pw = PasswordGenerator::generate(10, "");
+  ASSERT_TRUE(pw.empty());
+}
+
+// ============================================================
+// Tests: Charset constants
+// ============================================================
+
+TEST(charset_lowercase_has_26_chars) {
+  ASSERT_EQ(charsets::LOWERCASE.size(), static_cast<size_t>(26));
+}
+
+TEST(charset_uppercase_has_26_chars) {
+  ASSERT_EQ(charsets::UPPERCASE.size(), static_cast<size_t>(26));
+}
+
+TEST(charset_numbers_has_10_chars) {
+  ASSERT_EQ(charsets::NUMBERS.size(), static_cast<size_t>(10));
+}
+
+TEST(charset_symbols_not_empty) {
+  ASSERT_TRUE(!charsets::SYMBOLS.empty());
 }
 
 // ============================================================
