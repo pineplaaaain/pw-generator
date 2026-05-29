@@ -3,18 +3,15 @@
 // If you want to run as a non-root user in the container, see .devcontainer/docker-compose.yml.
 {
 	"name": "Existing Docker Compose (Extend)",
-
 	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
 	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
 	"dockerComposeFile": [
 		"../docker-compose.yml",
 		"docker-compose.yml"
 	],
-
 	// The 'service' property is the name of the service for the container that VS Code should
 	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
 	"service": "app",
-
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
 	"workspaceFolder": "/app",
@@ -22,11 +19,11 @@
 		"vscode": {
 			"settings": {
 				"[c][cpp]": {
-				  "editor.wordBasedSuggestions": false,
-				  "editor.suggest.insertMode": "replace",
-				  "editor.semanticHighlighting.enabled": true,
-				  "editor.tabSize": 2,
-				  "editor.formatOnSave": true
+					"editor.wordBasedSuggestions": "off",
+					"editor.suggest.insertMode": "replace",
+					"editor.semanticHighlighting.enabled": true,
+					"editor.tabSize": 4,
+					"editor.formatOnSave": true
 				},
 				"[json][jsonc]": {
 					"editor.quickSuggestions": {
@@ -35,33 +32,34 @@
 					"editor.suggest.insertMode": "replace",
 					"editor.tabSize": 2
 				},
-				"C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 2 }"
-			  },
-			
-				// Add the IDs of extensions you want installed when the container is created.
-				"extensions": [
+				"C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 2 }",
+				// "terminal.integrated.defaultProfile.linux": "zsh"
+			},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
 				"ms-vscode.cpptools",
-					"ms-vscode.cpptools-extension-pack",
-					"ms-vscode.makefile-tools"
-			  ]
+				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.makefile-tools"
+			]
 		}
-	}
-
+	},
+	"containerEnv": {
+		"http_proxy": "",
+		"https_proxy": "",
+		"HTTP_PROXY": "",
+		"HTTPS_PROXY": "",
+		"no_proxy": "*",
+		"NO_PROXY": "*"
+	},
 	// Set *default* container specific settings.json values on container create.
-	
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
 	// Uncomment the next line if you want start specific services in your Docker Compose config.
 	// "runServices": [],
-
 	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
 	// "shutdownAction": "none",
-
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
-	// "postCreateCommand": "apt-get update && apt-get install -y curl",
-
+	"postCreateCommand": "unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY"
 	// Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"
 }

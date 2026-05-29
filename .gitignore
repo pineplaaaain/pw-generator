@@ -1,2 +1,32 @@
-out/*
+# ビルド出力
+out/
+*.o
+*.exe
+*.out
+*.app
+
+# コンパイラ生成ファイル
+*.d
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+
+# デバッグファイル
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# エディタ/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 .DS_Store
+
+# その他
+.cache/
+compile_commands.json

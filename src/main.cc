@@ -6,35 +6,51 @@
 #include "StringUtils.h"
 
 int main() {
-  int length;
+  size_t length;
   std::cout << "Enter password length (8 or more): ";
-  std::cin >> length;
+  
+  if (!(std::cin >> length)) {
+    std::cout << "Invalid input. Please enter a number." << std::endl;
+    return 1;
+  }
 
   if (length < 8) {
     std::cout << "Invalid password length. Must be 8 or more." << std::endl;
     return 1;
   }
 
-  PasswordCharset lowercase("Use lowercase letters",
-                            "abcdefghijklmnopqrstuvwxyz");
-  PasswordCharset uppercase("Use UPPERCASE letters",
-                            StringUtils::toupper(lowercase.str));
+  const PasswordCharset lowercase{"Use lowercase letters",
+                                   "abcdefghijklmnopqrstuvwxyz"};
+  const PasswordCharset uppercase{"Use UPPERCASE letters",
+                                   StringUtils::toupper(lowercase.str)};
+  const PasswordCharset numbers{"Use numbers", "0123456789"};
+  const PasswordCharset symbols{"Use symbols", "!@#$%^&*()_+-="};
 
-  PasswordCharset numbers("Use numbers", "0123456789");
-  PasswordCharset symbols("Use symbols", "!@#$%^&*()_+-=");
+  bool use_lowercase = PasswordGenerator::ask(lowercase);
+  bool use_uppercase = PasswordGenerator::ask(uppercase);
+  bool use_numbers = PasswordGenerator::ask(numbers);
+  bool use_symbols = PasswordGenerator::ask(symbols);
 
-  if (!lowercase.is_use && !uppercase.is_use && !numbers.is_use &&
-      !symbols.is_use) {
-    std::cout
-        << "Invalid character set. At least one character set must be used."
-        << std::endl;
+  if (!use_uppercase && !use_lowercase && !use_numbers && !use_symbols) {
+    std::cout << "Invalid character set. At least one character set must be used."
+              << std::endl;
     return 1;
   }
 
-  PasswordGenerator password_generator(lowercase, uppercase, numbers, symbols);
+  std::string charset;
+  if (use_lowercase) charset += lowercase.str;
+  if (use_uppercase) charset += uppercase.str;
+  if (use_numbers) charset += numbers.str;
+  if (use_symbols) charset += symbols.str;
 
-  // パスワード生成
-  password_generator.generate(length);
+  std::string password = PasswordGenerator::generate(length, charset);
+
+  if (password.empty()) {
+    std::cout << "Failed to generate password." << std::endl;
+    return 1;
+  }
+
+  std::cout << "Generated password: " << password << std::endl;
 
   return 0;
-};
+}
