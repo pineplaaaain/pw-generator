@@ -32,6 +32,12 @@ jobs:
         run: |
           ${{ matrix.cc }} -std=c++17 -Wall -Wextra -O2 -o ${{ matrix.artifact }} src/main.cc
 
+      - name: Test
+        run: |
+          ${{ matrix.cc }} -std=c++17 -Wall -Wextra -O2 -o test_runner tests/test_main.cc
+          ./test_runner
+        shell: bash
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

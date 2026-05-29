@@ -23,14 +23,13 @@ inline std::string PasswordGenerator::generate(size_t length,
   if (charset.empty()) return "";
 
   std::random_device rd;
-  std::mt19937 gen(rd());
   std::uniform_int_distribution<size_t> dis(0, charset.size() - 1);
 
   std::string password;
   password.reserve(length);
 
   for (size_t i = 0; i < length; ++i) {
-    password += charset[dis(gen)];
+    password += charset[dis(rd)];
   }
 
   return password;
@@ -42,7 +41,6 @@ inline std::string PasswordGenerator::generateGuaranteed(
   if (length < charsets.size()) return "";
 
   std::random_device rd;
-  std::mt19937 gen(rd());
 
   std::string password;
   password.reserve(length);
@@ -51,7 +49,7 @@ inline std::string PasswordGenerator::generateGuaranteed(
   for (const auto& charset : charsets) {
     if (charset.empty()) return "";
     std::uniform_int_distribution<size_t> dis(0, charset.size() - 1);
-    password += charset[dis(gen)];
+    password += charset[dis(rd)];
   }
 
   // Step 2: Build combined pool and fill remaining positions
@@ -62,13 +60,13 @@ inline std::string PasswordGenerator::generateGuaranteed(
   std::uniform_int_distribution<size_t> dis(0, combined.size() - 1);
 
   for (size_t i = charsets.size(); i < length; ++i) {
-    password += combined[dis(gen)];
+    password += combined[dis(rd)];
   }
 
-  // Step 3: Fisher-Yates shuffle
+  // Step 3: Fisher-Yates shuffle using random_device
   for (size_t i = password.size() - 1; i > 0; --i) {
     std::uniform_int_distribution<size_t> swap_dis(0, i);
-    size_t j = swap_dis(gen);
+    size_t j = swap_dis(rd);
     std::swap(password[i], password[j]);
   }
 

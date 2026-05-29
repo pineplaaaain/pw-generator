@@ -1,7 +1,9 @@
 services:
   app:
     container_name: 'pw-generator'
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     tty: true
     volumes:
       - .:/app

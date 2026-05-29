@@ -5,6 +5,7 @@
 #include "ArgParser.h"
 #include "Clipboard.h"
 #include "Config.h"
+#include "Entropy.h"
 #include "InteractiveMode.h"
 #include "PasswordCharset.h"
 #include "PasswordGenerator.h"
@@ -67,6 +68,14 @@ int main(int argc, char* argv[]) {
   for (const auto& pw : passwords) {
     std::cout << pw << std::endl;
   }
+
+  // Show entropy
+  size_t charsetSize = 0;
+  for (const auto& cs : charsets) {
+    charsetSize += cs.size();
+  }
+  std::cerr << "Strength: " << Entropy::format(charsetSize, config.length)
+            << std::endl;
 
   // Clipboard handling
   bool shouldCopy =

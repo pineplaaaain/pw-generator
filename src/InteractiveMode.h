@@ -6,6 +6,7 @@
 
 #include "Clipboard.h"
 #include "Config.h"
+#include "Entropy.h"
 #include "PasswordCharset.h"
 #include "PasswordGenerator.h"
 #include "StringUtils.h"
@@ -91,6 +92,14 @@ inline int runInteractiveMode() {
   for (const auto& pw : passwords) {
     std::cout << pw << std::endl;
   }
+
+  // Show entropy
+  size_t charsetSize = 0;
+  for (const auto& cs : charsets) {
+    charsetSize += cs.size();
+  }
+  std::cerr << "Strength: " << Entropy::format(charsetSize, length)
+            << std::endl;
 
   // Clipboard: auto-copy if single password
   if (count == 1) {
